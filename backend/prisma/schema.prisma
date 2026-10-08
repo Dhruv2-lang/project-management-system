@@ -1,0 +1,86 @@
+// Prisma schema for the Project Management System.
+// Database: PostgreSQL. See docs/DATABASE.md for the full explanation.
+
+generator client {
+  provider   = "prisma-client-js"
+  // "client" = Rust-free query compiler; uses the @prisma/adapter-pg driver adapter
+  // (see src/config/prisma.ts). No native query-engine binary is required.
+  engineType = "client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ProjectStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
+
+model User {
+  id           String   @id @default(uuid()) @db.Uuid
+  fullName     String
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  projects Project[]
+  tasks    Task[]
+}
+
+model Project {
+  id          String        @id @default(uuid()) @db.Uuid
+  userId      String        @db.Uuid
+  name        String
+  description String?
+  status      ProjectStatus @default(NOT_STARTED)
+  startDate   DateTime?
+  endDate     DateTime?
+  createdAt   DateTime      @default(now())
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tasks Task[]
+
+  // Target of the composite FK from Task: guarantees (projectId, userId) pairs are real.
+  @@unique([id, userId])
+  @@index([userId])
+  @@index([status])
+  @@index([userId, status])
+}
+
+model Task {
+  id          String       @id @default(uuid()) @db.Uuid
+  userId      String       @db.Uuid
+  projectId   String       @db.Uuid
+  name        String
+  description String?
+  priority    TaskPriority @default(MEDIUM)
+  status      TaskStatus   @default(PENDING)
+  dueDate     DateTime?
+  createdAt   DateTime     @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Composite FK: a task's owner MUST be the owner of its project (enforced by the database).
+  // Deleting a project cascades to its tasks.
+  project Project @relation(fields: [projectId, userId], references: [id, userId], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([projectId])
+  @@index([status])
+  @@index([priority])
+  @@index([userId, status])
+}
