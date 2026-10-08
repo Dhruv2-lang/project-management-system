@@ -1,0 +1,23 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  background-color: #f8fafc; /* slate-50 */
+  color: #0f172a; /* slate-900 */
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Visible keyboard focus for everything interactive. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
