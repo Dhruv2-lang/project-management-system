@@ -38,11 +38,26 @@ export function createApp(options: AppOptions = {}) {
   );
 
   if (!env.isTest) app.use(morgan(env.isProduction ? 'combined' : 'dev'));
-  app.use(express.json({ limit: '100kb' }));
 
-  app.use('/api', createApiLimiter(), createApiRouter(createAuthLimiter(options.authRateLimitMax)));
+app.use(express.json({ limit: '100kb' }));
 
-  app.use(notFoundHandler);
-  app.use(errorHandler);
+// Root endpoint: confirms the API service is running.
+app.get('/', (_req, res) => {
+  res.json({
+    success: true,
+    message: 'Project Management API is running',
+    health: '/api/health'
+  });
+});
+
+app.use(
+  '/api',
+  createApiLimiter(),
+  createApiRouter(createAuthLimiter(options.authRateLimitMax))
+);
+
+app.use(notFoundHandler);
+app.use(errorHandler);
+
   return app;
 }
