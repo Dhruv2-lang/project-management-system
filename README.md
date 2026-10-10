@@ -4,14 +4,30 @@ A full-stack project management application designed to help users
 organize projects, manage tasks, track progress, and view
 project-related information through a web interface.
 
-**Live Demo:** [Project Management
-System](https://project-management-system-one-mu.vercel.app/)\
-**Backend API:** [Render
-Backend](https://project-management-system-4j7i.onrender.com)\
-**API Health Check:** [Check Backend
-Health](https://project-management-system-4j7i.onrender.com/api/health)\
-**Source Code:** [GitHub
-Repository](https://github.com/Dhruv2-lang/project-management-system)
+
+**Live Demo:** [Project Management System](https://project-management-system-one-mu.vercel.app/)  
+**Backend API:** [Render Backend](https://project-management-system-4j7i.onrender.com)  
+**API Health Check:** [Check Backend Health](https://project-management-system-4j7i.onrender.com/api/health)  
+**Source Code:** [GitHub Repository](https://github.com/Dhruv2-lang/project-management-system)
+=======
+## Live Deployment
+
+- Web Application: https://project-management-system-one-mu.vercel.app
+- Backend API: https://project-management-system-4j7i.onrender.com
+- Backend Health Check: https://project-management-system-4j7i.onrender.com/api/health
+
+## Mobile Application
+
+The Android mobile application is located in the `mobile/` directory and uses the same backend API and PostgreSQL database as the web application.
+
+For local Android testing:
+
+```bash
+cd mobile
+npm install
+npx expo start
+## Repository layout
+>>>>>>> 7652460 (docs: update README)
 
 ## Mobile Application Status
 
